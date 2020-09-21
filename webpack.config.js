@@ -14,7 +14,14 @@ module.exports = {
 		rules: [{
 			test: /\.(js|ts)x?$/,
 			exclude: /node_modules/,
-			loader: ['babel-loader', 'eslint-loader']
+			loader: 'babel-loader'
+		}, {
+			test: /\.(js|ts)x?$/,
+			exclude: /node_modules/,
+			loader: 'eslint-loader',
+			options: {
+				fix: true
+			}
 		}, {
 			test: /\.s[ac]ss$/,
 			loader: ['style-loader', 'css-loader', 'sass-loader']
@@ -24,6 +31,8 @@ module.exports = {
 		}]
 	},
 	plugins: [
-		new HtmlWebpackPlugin({ template: path.resolve(__dirname, 'index.html') })
+		new HtmlWebpackPlugin({
+			template: path.resolve(__dirname, 'index.html')
+		})
 	]
 }

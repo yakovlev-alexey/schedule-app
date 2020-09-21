@@ -20,6 +20,7 @@
     "@typescript-eslint/eslint-plugin": "^4.1.1",
     "@typescript-eslint/parser": "^4.1.1",
     "@vkontakte/icons": "^1.41.0",
+    "@vkontakte/vk-bridge": "^2.2.8",
     "@vkontakte/vkui": "^3.12.6",
     "axios": "^0.20.0",
     "babel-loader": "^8.1.0",
