@@ -2,7 +2,7 @@
   font-family: 'Roboto', Arial, sans-serif;
 }
 
-$selected-date-color: #4680C2;
+$selected-date-color: #4680c2;
 $hover-date-color: #91bff2;
 $current-date-color: #edaf51;
 
@@ -12,8 +12,6 @@ $current-date-color: #edaf51;
 
   display: flex;
   flex-flow: column-reverse nowrap;
-
-  border-bottom: 1px solid #d3d3d3;
 }
 
 .react-calendar__navigation {
@@ -59,7 +57,7 @@ $tile-size: 15px;
 .react-calendar__tile--active,
 .react-calendar__tile--active:enabled:hover,
 .react-calendar__tile--active:enabled:focus {
-  @include react-calendar__tile--selected($selected-date-color)
+  @include react-calendar__tile--selected($selected-date-color);
 }
 
 .react-calendar__month-view__weekdays__weekday {
@@ -71,10 +69,82 @@ $tile-size: 15px;
 .react-calendar__navigation button:enabled:hover,
 .react-calendar__navigation button:enabled:focus {
   background-color: #fff;
-  @include react-calendar__tile--selected(#d3d3d3)
+  @include react-calendar__tile--selected(#d3d3d3);
 }
 
 .react-calendar__navigation__prev2-button,
 .react-calendar__navigation__next2-button {
   display: none;
+}
+
+$active-bullet-color: $hover-date-color;
+$inactive-bullet-color: #d3d3d3;
+
+.lesson-card {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding-bottom: 5px;
+}
+
+.Card--ios {
+  .lesson-card-header {
+    padding: 0 4px;
+  }
+}
+
+.lesson-card-header {
+  margin-bottom: -8px;
+}
+
+.lesson-card-body {
+  p {
+    font-size: 14px;
+    margin: 3px 0;
+  }
+
+  p:first-child {
+    margin-top: 10px;
+  }
+
+  p:last-child {
+    margin-bottom: 10px;
+  }
+}
+
+.lesson-card-multiple {
+  margin-bottom: 5px;
+}
+
+.lesson-card-bullet {
+  display: inline-block;
+  margin: 10px 6px;
+  margin-bottom: 0px;
+  width: 5px;
+  height: 5px;
+  border-radius: 5px;
+  box-shadow: 0px 0px 0px 3px $inactive-bullet-color;
+  background-color: $inactive-bullet-color;
+}
+
+.lesson-card-bullet--active {
+  box-shadow: 0px 0px 0px 3px $active-bullet-color;
+  background-color: $active-bullet-color;
+}
+
+.lesson-card-bullet:last-child {
+  margin-right: 0;
+}
+
+.CardScroll__in::before,
+.CardScroll__in::after {
+  display: none;
+}
+
+.Icon {
+  display: inline;
+}
+
+.Group {
+  margin-top: 0;
+  margin-bottom: 0;
 }
