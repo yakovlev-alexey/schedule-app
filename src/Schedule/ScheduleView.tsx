@@ -8,6 +8,7 @@ import {
   Placeholder,
   Separator
 } from '@vkontakte/vkui'
+import Icon56ErrorOutline from '@vkontakte/icons/dist/56/error_outline'
 import { Swiper, SwiperSlide } from 'swiper/react'
 
 import { Lesson } from '../types'
@@ -131,6 +132,7 @@ const mapLessonsToCards = (lessons: Lesson[][]): JSX.Element[] =>
 
 type ScheduleViewProps = {
   loading: boolean
+  error: boolean
   lessons: Lesson[]
 }
 
@@ -142,7 +144,13 @@ const ScheduleView: React.FunctionComponent<ScheduleViewProps> = (
     [props.lessons]
   )
 
-  if (props.loading) {
+  if (props.error) {
+    return (
+      <Placeholder icon={<Icon56ErrorOutline />}>
+        Произошла ошибка при загрузке
+      </Placeholder>
+    )
+  } else if (props.loading) {
     return <PanelSpinner />
   } else if (props.lessons?.length == 0) {
     return <Placeholder>Похоже, что в этот день нет занятий</Placeholder>

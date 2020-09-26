@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useMemo } from 'react'
 
 import { PanelHeader, Separator } from '@vkontakte/vkui'
 import Calendar from 'react-calendar/dist/umd/Calendar'
@@ -11,6 +11,7 @@ import 'react-calendar/dist/Calendar.css'
 
 type ScheduleProps = {
   loading: boolean
+  error: boolean
   selectedDate: Date
   setSelectedDate: (date: Date) => void
   days: Day[]
@@ -36,6 +37,7 @@ const Schedule: React.FunctionComponent<ScheduleProps> = (
       <Separator />
       <ScheduleView
         loading={props.loading}
+        error={props.error}
         lessons={props.days.find(({ date }) => date == formattedDate)?.lessons}
       />
     </div>

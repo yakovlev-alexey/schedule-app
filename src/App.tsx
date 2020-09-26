@@ -38,14 +38,17 @@ const App: React.FunctionComponent = () => {
   const [selectedGroup, setSelectedGroup] = useState<number>(29868)
   const [selectedDate, setSelectedDate] = useState<Date>(new Date())
   const [days, setDays] = useState<Day[]>([])
+  const [error, setError] = useState<boolean>(false)
   const [loading, setLoading] = useState<boolean>(false)
 
   useEffect(() => {
     const formattedDate = formatDate(selectedDate)
     if (days.find(({ date }) => date == formattedDate) == null) {
       setLoading(true)
+      setError(false)
       API.get(`/${selectedGroup}?date=${formatDate(selectedDate)}`)
         .then((response) => setDays([...days, ...extractDays(response.data)]))
+        .catch(() => setError(true))
         .then(() => setLoading(false))
     }
   }, [selectedDate])
@@ -55,6 +58,7 @@ const App: React.FunctionComponent = () => {
       <View id="schedule">
         <Schedule
           loading={loading}
+          error={error}
           selectedDate={selectedDate}
           setSelectedDate={setSelectedDate}
           days={days}
