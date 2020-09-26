@@ -41,17 +41,19 @@ const App: React.FunctionComponent = () => {
   const [error, setError] = useState<boolean>(false)
   const [loading, setLoading] = useState<boolean>(false)
 
-  useEffect(() => {
+  const fetchDays = () => {
+    setError(false)
     const formattedDate = formatDate(selectedDate)
     if (days.find(({ date }) => date == formattedDate) == null) {
       setLoading(true)
-      setError(false)
       API.get(`/${selectedGroup}?date=${formatDate(selectedDate)}`)
         .then((response) => setDays([...days, ...extractDays(response.data)]))
         .catch(() => setError(true))
         .then(() => setLoading(false))
     }
-  }, [selectedDate])
+  }
+
+  useEffect(fetchDays, [selectedDate])
 
   return (
     <Root activeView={activeView}>
@@ -59,6 +61,7 @@ const App: React.FunctionComponent = () => {
         <Schedule
           loading={loading}
           error={error}
+          onRetry={fetchDays}
           selectedDate={selectedDate}
           setSelectedDate={setSelectedDate}
           days={days}

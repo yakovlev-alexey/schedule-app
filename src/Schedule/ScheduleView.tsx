@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from 'react'
 
 import {
+  Button,
   Card,
   Div,
   Header,
@@ -14,6 +15,7 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 import { Lesson } from '../types'
 
 import 'swiper/swiper.scss'
+import { setSourceMapRange } from 'typescript'
 
 type ScheduleCardProps = {
   lessons: Lesson[]
@@ -133,6 +135,7 @@ const mapLessonsToCards = (lessons: Lesson[][]): JSX.Element[] =>
 type ScheduleViewProps = {
   loading: boolean
   error: boolean
+  onRetry: () => void
   lessons: Lesson[]
 }
 
@@ -146,7 +149,10 @@ const ScheduleView: React.FunctionComponent<ScheduleViewProps> = (
 
   if (props.error) {
     return (
-      <Placeholder icon={<Icon56ErrorOutline />}>
+      <Placeholder
+        icon={<Icon56ErrorOutline />}
+        action={<Button onClick={props.onRetry}>Повторить загрузку</Button>}
+      >
         Произошла ошибка при загрузке
       </Placeholder>
     )

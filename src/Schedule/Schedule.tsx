@@ -12,6 +12,7 @@ import 'react-calendar/dist/Calendar.css'
 type ScheduleProps = {
   loading: boolean
   error: boolean
+  onRetry: () => void
   selectedDate: Date
   setSelectedDate: (date: Date) => void
   days: Day[]
@@ -38,6 +39,7 @@ const Schedule: React.FunctionComponent<ScheduleProps> = (
       <ScheduleView
         loading={props.loading}
         error={props.error}
+        onRetry={props.onRetry}
         lessons={props.days.find(({ date }) => date == formattedDate)?.lessons}
       />
     </div>
