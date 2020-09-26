@@ -11,11 +11,12 @@ import {
 } from '@vkontakte/vkui'
 import Icon56ErrorOutline from '@vkontakte/icons/dist/56/error_outline'
 import { Swiper, SwiperSlide } from 'swiper/react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faClock } from '@fortawesome/free-regular-svg-icons'
 
 import { Lesson } from '../types'
 
 import 'swiper/swiper.scss'
-import { setSourceMapRange } from 'typescript'
 
 type ScheduleCardProps = {
   lessons: Lesson[]
@@ -44,7 +45,12 @@ const mapLessonsToContents = (lessons: Lesson[]): JSX.Element[] =>
       <div className="lesson-card-content">
         <div className="row justify-content-between align-items-center lesson-card-header">
           <Header
-            aside={`${lesson.time_start} - ${lesson.time_end}`}
+            aside={
+              <React.Fragment>
+                {lesson.time_start} - {lesson.time_end}{' '}
+                <FontAwesomeIcon icon={faClock} />
+              </React.Fragment>
+            }
             mode="secondary"
             className="w-50"
           >
@@ -53,16 +59,15 @@ const mapLessonsToContents = (lessons: Lesson[]): JSX.Element[] =>
         </div>
         <small className="lesson-card-type Cell__description">
           {lesson.typeObj.name}
-          {/* {lessons[0].groups.map((group) => group.name)} */}
         </small>
         <div className="lesson-card-body">
           <p className="RichCell__text">
-            {lesson.teachers != null && lesson.teachers.length > 0
+            {lesson.teachers?.length > 0
               ? lesson.teachers.map(({ full_name }) => full_name).join(', ')
               : 'Неизвестный преподаватель'}
           </p>
           <p className="RichCell__text">
-            {lesson.auditories.length > 0
+            {lesson.auditories?.length > 0
               ? lesson.auditories
                   .map(({ name, building }) => `${name}, ${building.name}`)
                   .join(' | ')

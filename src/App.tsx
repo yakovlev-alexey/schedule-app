@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react'
 
-import { Root, View } from '@vkontakte/vkui'
+import { Epic, Tabbar, TabbarItem, View } from '@vkontakte/vkui'
+import Icon28CalendarOutline from '@vkontakte/icons/dist/28/calendar_outline'
+import Icon28SettingsOutline from '@vkontakte/icons/dist/28/settings_outline'
+import Icon28UsersOutline from '@vkontakte/icons/dist/28/users_outline'
 
 import Schedule from './Schedule'
 import { Week, Day } from './types'
@@ -55,8 +58,41 @@ const App: React.FunctionComponent = () => {
 
   useEffect(fetchDays, [selectedDate])
 
+  const onStoryChange = (e: React.MouseEvent<HTMLElement, MouseEvent>) =>
+    setActiveView(e.currentTarget.dataset.story)
+
   return (
-    <Root activeView={activeView}>
+    <Epic
+      activeStory={activeView}
+      tabbar={
+        <Tabbar>
+          <TabbarItem
+            onClick={onStoryChange}
+            selected={activeView == 'schedule'}
+            data-story="schedule"
+            text="Расписание"
+          >
+            <Icon28CalendarOutline />
+          </TabbarItem>
+          <TabbarItem
+            onClick={onStoryChange}
+            selected={activeView == 'groups'}
+            data-story="groups"
+            text="Группы"
+          >
+            <Icon28UsersOutline />
+          </TabbarItem>
+          <TabbarItem
+            onClick={onStoryChange}
+            selected={activeView == 'settings'}
+            data-story="settings"
+            text="Настройки"
+          >
+            <Icon28SettingsOutline />
+          </TabbarItem>
+        </Tabbar>
+      }
+    >
       <View id="schedule">
         <Schedule
           loading={loading}
@@ -67,7 +103,7 @@ const App: React.FunctionComponent = () => {
           days={days}
         />
       </View>
-    </Root>
+    </Epic>
   )
 }
 

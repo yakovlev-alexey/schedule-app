@@ -6,6 +6,19 @@ $selected-date-color: #4680c2;
 $hover-date-color: #91bff2;
 $current-date-color: #edaf51;
 
+.schedule-calendar-wrapper {
+  position: sticky;
+  margin-top: -1px;
+  top: 55px;
+  z-index: 100000;
+}
+
+.View--ios {
+  .schedule-calendar-wrapper {
+    top: 51px;
+  }
+}
+
 .schedule-calendar {
   width: 100%;
   border: none;
@@ -77,6 +90,10 @@ $tile-size: 15px;
   display: none;
 }
 
+.schedule-view {
+  padding-bottom: 48px;
+}
+
 $active-bullet-color: $hover-date-color;
 $inactive-bullet-color: #d3d3d3;
 
@@ -132,13 +149,14 @@ $vkui-text-secondary: #818c99;
 }
 
 .lesson-card-multiple {
+  margin-top: 5px;
   margin-bottom: 5px;
+  height: 25px;
 }
 
 .lesson-card-bullet {
   display: inline-block;
-  margin: 10px 6px;
-  margin-bottom: 0px;
+  margin: 0 6px;
   width: 5px;
   height: 5px;
   border-radius: 5px;
@@ -167,4 +185,10 @@ $vkui-text-secondary: #818c99;
 .Group {
   margin-top: 0;
   margin-bottom: 0;
+}
+
+$tabbar-height: 48px;
+
+.Epic {
+  height: 100vh;
 }

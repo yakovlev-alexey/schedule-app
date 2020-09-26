@@ -28,20 +28,26 @@ const Schedule: React.FunctionComponent<ScheduleProps> = (
   return (
     <div>
       <PanelHeader separator={false}>Расписание</PanelHeader>
-      <Separator />
-      <Calendar
-        className="schedule-calendar"
-        locale="ru-RU"
-        value={props.selectedDate}
-        onChange={props.setSelectedDate}
-      />
-      <Separator />
-      <ScheduleView
-        loading={props.loading}
-        error={props.error}
-        onRetry={props.onRetry}
-        lessons={props.days.find(({ date }) => date == formattedDate)?.lessons}
-      />
+      <div className="schedule-calendar-wrapper">
+        <Separator />
+        <Calendar
+          className="schedule-calendar"
+          locale="ru-RU"
+          value={props.selectedDate}
+          onChange={props.setSelectedDate}
+        />
+        <Separator />
+      </div>
+      <div className="schedule-view">
+        <ScheduleView
+          loading={props.loading}
+          error={props.error}
+          onRetry={props.onRetry}
+          lessons={
+            props.days.find(({ date }) => date == formattedDate)?.lessons
+          }
+        />
+      </div>
     </div>
   )
 }
