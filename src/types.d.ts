@@ -63,6 +63,17 @@ export type Lesson = {
 
 export type Day = {
   weekday: number
-  date: Date
+  date: string
   lessons: Lesson[]
+}
+
+export type WeekType = {
+  date_start: string
+  date_end: string
+  is_odd: boolean
+}
+
+export type Week = {
+  week: WeekType
+  days: Day[]
 }

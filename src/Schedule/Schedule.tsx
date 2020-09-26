@@ -1,29 +1,27 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 
 import { PanelHeader, Separator } from '@vkontakte/vkui'
 import Calendar from 'react-calendar/dist/umd/Calendar'
 
 import ScheduleView from './ScheduleView'
-import { Lesson, Day } from '../types'
+import { formatDate } from '../util'
+import { Day } from '../types'
 
 import 'react-calendar/dist/Calendar.css'
 
 type ScheduleProps = {
+  loading: boolean
   selectedDate: Date
-  setSelectedDate: () => void
+  setSelectedDate: (date: Date) => void
+  days: Day[]
 }
 
 const Schedule: React.FunctionComponent<ScheduleProps> = (
   props: ScheduleProps
 ) => {
-  const [lsns, setLsns] = useState<Lesson>()
-  useEffect(() => {
-    import('./lessons.json').then((res) => {
-      setLsns(res.default)
-    })
-  }, [])
-
-  console.log(lsns)
+  const formattedDate = useMemo(() => formatDate(props.selectedDate), [
+    props.selectedDate
+  ])
 
   return (
     <div>
@@ -36,7 +34,10 @@ const Schedule: React.FunctionComponent<ScheduleProps> = (
         onChange={props.setSelectedDate}
       />
       <Separator />
-      <ScheduleView lessons={lsns} />
+      <ScheduleView
+        loading={props.loading}
+        lessons={props.days.find(({ date }) => date == formattedDate)?.lessons}
+      />
     </div>
   )
 }

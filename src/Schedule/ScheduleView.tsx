@@ -1,6 +1,13 @@
 import React, { useState, useMemo } from 'react'
 
-import { Card, Header, Separator, UsersStack } from '@vkontakte/vkui'
+import {
+  Card,
+  Div,
+  Header,
+  PanelSpinner,
+  Placeholder,
+  Separator
+} from '@vkontakte/vkui'
 import { Swiper, SwiperSlide } from 'swiper/react'
 
 import { Lesson } from '../types'
@@ -33,9 +40,12 @@ const mapLessonsToContents = (lessons: Lesson[]): JSX.Element[] =>
     <SwiperSlide key={index}>
       <div className="lesson-card-content">
         <div className="row justify-content-between align-items-center lesson-card-header">
-          <Header mode="secondary">{lesson.subject}</Header>
-          <Header mode="secondary">
-            {lesson.time_start} - {lesson.time_end}
+          <Header
+            aside={`${lesson.time_start} - ${lesson.time_end}`}
+            mode="secondary"
+            className="w-50"
+          >
+            {lesson.subject}
           </Header>
         </div>
         <small className="lesson-card-type Cell__description">
@@ -69,7 +79,7 @@ const ScheduleCard: React.FunctionComponent<ScheduleCardProps> = ({
 
   if (lessons.length > 1) {
     return (
-      <React.Fragment>
+      <Div>
         <Card className="container lesson-card lesson-card-lg">
           <Swiper onSlideChange={({ activeIndex }) => setSlide(activeIndex)}>
             {contents}
@@ -80,10 +90,14 @@ const ScheduleCard: React.FunctionComponent<ScheduleCardProps> = ({
             <div>{renderBullets(lessons.length, slide)}</div>
           </div>
         </Card>
-      </React.Fragment>
+      </Div>
     )
   } else {
-    return <Card className="container lesson-card">{contents}</Card>
+    return (
+      <Div>
+        <Card className="container lesson-card">{contents}</Card>
+      </Div>
+    )
   }
 }
 
@@ -116,6 +130,7 @@ const mapLessonsToCards = (lessons: Lesson[][]): JSX.Element[] =>
   ))
 
 type ScheduleViewProps = {
+  loading: boolean
   lessons: Lesson[]
 }
 
@@ -127,7 +142,13 @@ const ScheduleView: React.FunctionComponent<ScheduleViewProps> = (
     [props.lessons]
   )
 
-  return <div className="container">{lessonCards}</div>
+  if (props.loading) {
+    return <PanelSpinner />
+  } else if (props.lessons?.length == 0) {
+    return <Placeholder>Похоже, что в этот день нет занятий</Placeholder>
+  }
+
+  return <div>{lessonCards}</div>
 }
 
 export default ScheduleView

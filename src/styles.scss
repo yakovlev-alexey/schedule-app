@@ -81,9 +81,29 @@ $active-bullet-color: $hover-date-color;
 $inactive-bullet-color: #d3d3d3;
 
 .lesson-card {
-  margin-top: 10px;
-  margin-bottom: 10px;
   padding-bottom: 5px;
+
+  font-weight: 500;
+  color: #44494e;
+}
+
+.lesson-card-content {
+  overflow: hidden;
+}
+
+$vkui-text-secondary: #818c99;
+
+.lesson-card-header {
+  .Header {
+    width: 100%;
+  }
+  .Header__aside {
+    color: $vkui-text-secondary;
+    font-weight: 600;
+  }
+  .Header__content {
+    white-space: pre-wrap;
+  }
 }
 
 .Card--ios {
