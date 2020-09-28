@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const API = axios.create({
-  baseURL: 'https://ruz.spbstu.ru/api/v1/ruz/scheduler',
+  baseURL: 'http://localhost:8080/',
   responseType: 'json'
 })
 

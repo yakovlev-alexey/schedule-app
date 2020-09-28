@@ -69,7 +69,7 @@ const App: React.FunctionComponent = () => {
     const formattedDate = formatDate(selectedDate)
     if (days.find(({ date }) => date == formattedDate) == null) {
       setLoading(true)
-      API.get(`/${selectedGroupId}?date=${formatDate(selectedDate)}`)
+      API.get(`/scheduler/${selectedGroupId}?date=${formatDate(selectedDate)}`)
         .then((response) => setDays([...days, ...extractDays(response.data)]))
         .catch(() => setError(true))
         .then(() => setLoading(false))
@@ -77,14 +77,13 @@ const App: React.FunctionComponent = () => {
   }
 
   const fetchAllGroups = () => {
-    axios
-      .get('https://ruz.spbstu.ru/api/v1/ruz/faculties')
+    API.get('/faculties')
       .then((response) => response.data.faculties)
       .then((faculties: Faculty[]) =>
         faculties.map(({ id }) =>
-          axios
-            .get(`https://ruz.spbstu.ru/api/v1/ruz/faculties/${id}/groups`)
-            .then((response) => response.data.groups)
+          API.get(`/faculties/${id}/groups`).then(
+            (response) => response.data.groups
+          )
         )
       )
       .then((promises: Promise<Group[]>[]) => Promise.all(promises))
