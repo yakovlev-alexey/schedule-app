@@ -16,6 +16,8 @@ type ScheduleProps = {
   selectedDate: Date
   setSelectedDate: (date: Date) => void
   days: Day[]
+  groupSelected: boolean
+  onSelectGroup: () => void
 }
 
 const Schedule: React.FunctionComponent<ScheduleProps> = (
@@ -26,7 +28,7 @@ const Schedule: React.FunctionComponent<ScheduleProps> = (
   ])
 
   return (
-    <div>
+    <React.Fragment>
       <PanelHeader separator={false}>Расписание</PanelHeader>
       <div className="schedule-calendar-wrapper">
         <Separator />
@@ -46,9 +48,11 @@ const Schedule: React.FunctionComponent<ScheduleProps> = (
           lessons={
             props.days.find(({ date }) => date == formattedDate)?.lessons
           }
+          groupSelected={props.groupSelected}
+          onSelectGroup={props.onSelectGroup}
         />
       </div>
-    </div>
+    </React.Fragment>
   )
 }
 

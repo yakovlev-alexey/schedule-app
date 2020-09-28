@@ -142,6 +142,8 @@ type ScheduleViewProps = {
   error: boolean
   onRetry: () => void
   lessons: Lesson[]
+  groupSelected: boolean
+  onSelectGroup: () => void
 }
 
 const ScheduleView: React.FunctionComponent<ScheduleViewProps> = (
@@ -151,8 +153,15 @@ const ScheduleView: React.FunctionComponent<ScheduleViewProps> = (
     () => mapLessonsToCards(prepareLessons(props.lessons)),
     [props.lessons]
   )
-
-  if (props.error) {
+  if (!props.groupSelected) {
+    return (
+      <Placeholder
+        action={<Button onClick={props.onSelectGroup}>Выбрать группу</Button>}
+      >
+        Группа не выбрана
+      </Placeholder>
+    )
+  } else if (props.error) {
     return (
       <Placeholder
         icon={<Icon56ErrorOutline />}

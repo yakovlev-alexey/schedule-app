@@ -12,7 +12,7 @@ export type Group = {
   kind: number
   spec: string
   year: number
-  faculty: Faculty
+  faculty?: Faculty
 }
 
 export type Teacher = {

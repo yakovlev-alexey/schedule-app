@@ -90,6 +90,10 @@ $tile-size: 15px;
   display: none;
 }
 
+.react-calendar__navigation__label {
+  pointer-events: none;
+}
+
 .schedule-view {
   padding-bottom: 48px;
 }
