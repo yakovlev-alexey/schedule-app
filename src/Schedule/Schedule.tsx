@@ -7,7 +7,7 @@ import ScheduleView from './ScheduleView'
 import { formatDate } from '../util'
 import { Day } from '../types'
 
-import 'react-calendar/dist/Calendar.css'
+require('react-calendar/dist/Calendar.css') // doesn't compile with import
 
 type ScheduleProps = {
   loading: boolean
