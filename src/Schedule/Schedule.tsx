@@ -20,12 +20,8 @@ type ScheduleProps = {
   onSelectGroup: () => void
 }
 
-const Schedule: React.FunctionComponent<ScheduleProps> = (
-  props: ScheduleProps
-) => {
-  const formattedDate = useMemo(() => formatDate(props.selectedDate), [
-    props.selectedDate
-  ])
+const Schedule: React.FunctionComponent<ScheduleProps> = (props: ScheduleProps) => {
+  const formattedDate = useMemo(() => formatDate(props.selectedDate), [props.selectedDate])
 
   return (
     <React.Fragment>
@@ -45,9 +41,7 @@ const Schedule: React.FunctionComponent<ScheduleProps> = (
           loading={props.loading}
           error={props.error}
           onRetry={props.onRetry}
-          lessons={
-            props.days.find(({ date }) => date == formattedDate)?.lessons
-          }
+          lessons={props.days.find(({ date }) => date == formattedDate)?.lessons}
           groupSelected={props.groupSelected}
           onSelectGroup={props.onSelectGroup}
         />

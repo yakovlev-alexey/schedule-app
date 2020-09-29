@@ -1,14 +1,6 @@
 import React, { useState, useMemo } from 'react'
 
-import {
-  Button,
-  Card,
-  Div,
-  Header,
-  PanelSpinner,
-  Placeholder,
-  Separator
-} from '@vkontakte/vkui'
+import { Button, Card, Div, Header, PanelSpinner, Placeholder, Separator } from '@vkontakte/vkui'
 import Icon56ErrorOutline from '@vkontakte/icons/dist/56/error_outline'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -29,9 +21,7 @@ const renderBullets = (length: number, active: number): JSX.Element[] => {
       <span
         key={i}
         className={
-          active == i
-            ? 'lesson-card-bullet lesson-card-bullet--active'
-            : 'lesson-card-bullet'
+          active == i ? 'lesson-card-bullet lesson-card-bullet--active' : 'lesson-card-bullet'
         }
       />
     )
@@ -47,8 +37,7 @@ const mapLessonsToContents = (lessons: Lesson[]): JSX.Element[] =>
           <Header
             aside={
               <React.Fragment>
-                {lesson.time_start} - {lesson.time_end}{' '}
-                <FontAwesomeIcon icon={faClock} />
+                {lesson.time_start} - {lesson.time_end} <FontAwesomeIcon icon={faClock} />
               </React.Fragment>
             }
             mode="secondary"
@@ -57,9 +46,7 @@ const mapLessonsToContents = (lessons: Lesson[]): JSX.Element[] =>
             {lesson.subject}
           </Header>
         </div>
-        <small className="lesson-card-type Cell__description">
-          {lesson.typeObj.name}
-        </small>
+        <small className="lesson-card-type Cell__description">{lesson.typeObj.name}</small>
         <div className="lesson-card-body">
           <p className="RichCell__text">
             {lesson.teachers?.length > 0
@@ -89,9 +76,7 @@ const ScheduleCard: React.FunctionComponent<ScheduleCardProps> = ({
     return (
       <Div>
         <Card className="container lesson-card lesson-card-lg">
-          <Swiper onSlideChange={({ activeIndex }) => setSlide(activeIndex)}>
-            {contents}
-          </Swiper>
+          <Swiper onSlideChange={({ activeIndex }) => setSlide(activeIndex)}>{contents}</Swiper>
           <Separator wide />
           <div className="lesson-card-multiple d-flex justify-content-between align-items-center">
             <small>Несколько занятий в это время</small>
@@ -118,11 +103,7 @@ const prepareLessons = (lessons: Lesson[]): Lesson[][] => {
 
   for (let i = 0; i < lessons.length; ++i) {
     const lesson = [lessons[i]]
-    for (
-      let j = i + 1;
-      j < lessons.length && lessons[j].time_start == lessons[i].time_start;
-      ++j
-    ) {
+    for (let j = i + 1; j < lessons.length && lessons[j].time_start == lessons[i].time_start; ++j) {
       lesson.push(lessons[j])
       ++i
     }
@@ -133,9 +114,7 @@ const prepareLessons = (lessons: Lesson[]): Lesson[][] => {
 }
 
 const mapLessonsToCards = (lessons: Lesson[][]): JSX.Element[] =>
-  lessons.map((lessons, index) => (
-    <ScheduleCard key={index} lessons={lessons} />
-  ))
+  lessons.map((lessons, index) => <ScheduleCard key={index} lessons={lessons} />)
 
 type ScheduleViewProps = {
   loading: boolean
@@ -146,18 +125,13 @@ type ScheduleViewProps = {
   onSelectGroup: () => void
 }
 
-const ScheduleView: React.FunctionComponent<ScheduleViewProps> = (
-  props: ScheduleViewProps
-) => {
-  const lessonCards = useMemo(
-    () => mapLessonsToCards(prepareLessons(props.lessons)),
-    [props.lessons]
-  )
+const ScheduleView: React.FunctionComponent<ScheduleViewProps> = (props: ScheduleViewProps) => {
+  const lessonCards = useMemo(() => mapLessonsToCards(prepareLessons(props.lessons)), [
+    props.lessons
+  ])
   if (!props.groupSelected) {
     return (
-      <Placeholder
-        action={<Button onClick={props.onSelectGroup}>Выбрать группу</Button>}
-      >
+      <Placeholder action={<Button onClick={props.onSelectGroup}>Выбрать группу</Button>}>
         Группа не выбрана
       </Placeholder>
     )

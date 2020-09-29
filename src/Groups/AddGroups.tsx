@@ -24,9 +24,7 @@ type AddGroupsProps = {
   saveGroup: (group: Group) => void
 }
 
-const AddGroups: React.FunctionComponent<AddGroupsProps> = (
-  props: AddGroupsProps
-) => {
+const AddGroups: React.FunctionComponent<AddGroupsProps> = (props: AddGroupsProps) => {
   const [loading, setLoading] = useState<boolean>(true)
   const [error, setError] = useState<boolean>(false)
   const [search, setSearch] = useState<string>('')
@@ -55,8 +53,7 @@ const AddGroups: React.FunctionComponent<AddGroupsProps> = (
       props.savedGroups == null
         ? props.allGroups
         : props.allGroups?.filter(
-            ({ id }) =>
-              props.savedGroups.filter((group) => group.id == id).length == 0
+            ({ id }) => props.savedGroups.filter((group) => group.id == id).length == 0
           ),
     [props.allGroups, props.savedGroups]
   )
@@ -83,9 +80,7 @@ const AddGroups: React.FunctionComponent<AddGroupsProps> = (
               {group.name}
             </Cell>
           ))}
-          <Placeholder>
-            Введите более точный запрос, чтобы увидеть больше результатов
-          </Placeholder>
+          <Placeholder>Введите более точный запрос, чтобы увидеть больше результатов</Placeholder>
         </React.Fragment>
       )
     } else {
@@ -105,8 +100,7 @@ const AddGroups: React.FunctionComponent<AddGroupsProps> = (
     }
   }
 
-  const onSearchChange = (e: React.ChangeEvent<HTMLInputElement>) =>
-    setSearch(e.target.value)
+  const onSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => setSearch(e.target.value)
 
   const renderContents = (): JSX.Element => {
     if (loading) {
@@ -135,9 +129,7 @@ const AddGroups: React.FunctionComponent<AddGroupsProps> = (
 
   return (
     <React.Fragment>
-      <PanelHeader
-        left={<PanelHeaderClose onClick={props.openSaved}></PanelHeaderClose>}
-      >
+      <PanelHeader left={<PanelHeaderClose onClick={props.openSaved}></PanelHeaderClose>}>
         Добавить группы
       </PanelHeader>
       <FixedLayout vertical="top">

@@ -53,23 +53,15 @@ const resolveSmartDefaultDay = () => {
 }
 
 const App: React.FunctionComponent = () => {
-  const [activeView, setActiveView] = useState<
-    'schedule' | 'groups' | 'settings'
-  >('schedule')
+  const [activeView, setActiveView] = useState<'schedule' | 'groups' | 'settings'>('schedule')
   const [popout, setPopout] = useState<JSX.Element>(null)
-  const [activeGroupsPanel, setActiveGroupsPanel] = useState<'saved' | 'add'>(
-    'saved'
-  )
+  const [activeGroupsPanel, setActiveGroupsPanel] = useState<'saved' | 'add'>('saved')
 
   const [selectedGroupId, setSelectedGroupId] = useState<number>(
     JSON.parse(localStorage.getItem('selectedGroupId'))
   )
-  const [smartDefaultDay, setSmartDefaultDay] = useState<boolean>(
-    resolveSmartDefaultDay()
-  )
-  const [selectedDate, setSelectedDate] = useState<Date>(
-    getDefaultDate(smartDefaultDay)
-  )
+  const [smartDefaultDay, setSmartDefaultDay] = useState<boolean>(resolveSmartDefaultDay())
+  const [selectedDate, setSelectedDate] = useState<Date>(getDefaultDate(smartDefaultDay))
 
   const [days, setDays] = useState<Day[]>([])
 
@@ -98,9 +90,7 @@ const App: React.FunctionComponent = () => {
       .then((response) => response.data.faculties)
       .then((faculties: Faculty[]) =>
         faculties.map(({ id }) =>
-          API.get(`/faculties/${id}/groups`).then(
-            (response) => response.data.groups
-          )
+          API.get(`/faculties/${id}/groups`).then((response) => response.data.groups)
         )
       )
       .then((promises: Promise<Group[]>[]) => Promise.all(promises))
@@ -132,8 +122,7 @@ const App: React.FunctionComponent = () => {
   }
 
   const saveGroup = (group: Group) => {
-    const newSavedGroups =
-      savedGroups == null ? [group] : [...savedGroups, group]
+    const newSavedGroups = savedGroups == null ? [group] : [...savedGroups, group]
     localStorage.setItem('savedGroups', JSON.stringify(newSavedGroups))
     if (savedGroups == null || savedGroups.length == 0) {
       selectGroup(group.id)
@@ -146,10 +135,7 @@ const App: React.FunctionComponent = () => {
     const newSavedGroups = savedGroups?.filter((group) => group.id != id)
     localStorage.setItem('savedGroups', JSON.stringify(newSavedGroups))
     if (selectedGroupId == id) {
-      selectGroup(
-        newSavedGroups.length > 0 ? newSavedGroups[0].id : null,
-        false
-      )
+      selectGroup(newSavedGroups.length > 0 ? newSavedGroups[0].id : null, false)
     }
     setSavedGroups(newSavedGroups)
   }
@@ -186,8 +172,7 @@ const App: React.FunctionComponent = () => {
         ]}
         onClose={() => setPopout(null)}
       >
-        Восстановление настроек приведет к удалению всех настроек и сохраненных
-        групп.
+        Восстановление настроек приведет к удалению всех настроек и сохраненных групп.
       </Alert>
     )
   }

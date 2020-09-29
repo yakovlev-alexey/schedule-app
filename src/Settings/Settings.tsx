@@ -1,14 +1,6 @@
 import React, { useState } from 'react'
 
-import {
-  CellButton,
-  Group,
-  Header,
-  Link,
-  PanelHeader,
-  SimpleCell,
-  Switch
-} from '@vkontakte/vkui'
+import { CellButton, Group, Header, Link, PanelHeader, SimpleCell, Switch } from '@vkontakte/vkui'
 
 type SettingsProps = {
   smartDefaultDay: boolean
@@ -16,9 +8,7 @@ type SettingsProps = {
   onResetClick: () => void
 }
 
-const Settings: React.FunctionComponent<SettingsProps> = (
-  props: SettingsProps
-) => {
+const Settings: React.FunctionComponent<SettingsProps> = (props: SettingsProps) => {
   const [showTooltip, setShowTooltip] = useState<boolean>(false)
 
   return (
@@ -34,18 +24,13 @@ const Settings: React.FunctionComponent<SettingsProps> = (
             />
           }
           onClick={() => setShowTooltip(!showTooltip)}
-          description={
-            showTooltip ? 'Выбор следующего дня вечером текущего' : null
-          }
+          description={showTooltip ? 'Выбор следующего дня вечером текущего' : null}
         >
           Умное определение дня
         </SimpleCell>
       </Group>
       <Group header={<Header mode="secondary">Информация о приложении</Header>}>
-        <Link
-          href="https://github.com/yakovlev-alexey/schedule-app"
-          target="_blank"
-        >
+        <Link href="https://github.com/yakovlev-alexey/schedule-app" target="_blank">
           <CellButton>Репозиторий GitHub</CellButton>
         </Link>
         <Link href="https://t.me/alexeyjakovlev" target="_blank">

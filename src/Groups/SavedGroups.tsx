@@ -26,9 +26,7 @@ type SavedGroupsProps = {
   openAddGroups: () => void
 }
 
-const SavedGroups: React.FunctionComponent<SavedGroupsProps> = (
-  props: SavedGroupsProps
-) => {
+const SavedGroups: React.FunctionComponent<SavedGroupsProps> = (props: SavedGroupsProps) => {
   const platform = usePlatform()
 
   const mapGroupsToCells = (): JSX.Element[] =>
@@ -66,22 +64,13 @@ const SavedGroups: React.FunctionComponent<SavedGroupsProps> = (
       </Cell>
     ))
 
-  const groupCells = useMemo(mapGroupsToCells, [
-    props.savedGroups,
-    props.selectedGroupId
-  ])
+  const groupCells = useMemo(mapGroupsToCells, [props.savedGroups, props.selectedGroupId])
 
   return (
     <React.Fragment>
       <PanelHeader>Группы</PanelHeader>
       <ItemGroup header={<Header mode="secondary">Сохраненные группы</Header>}>
-        <List>
-          {groupCells != null ? (
-            groupCells
-          ) : (
-            <Placeholder>Список пуст</Placeholder>
-          )}
-        </List>
+        <List>{groupCells != null ? groupCells : <Placeholder>Список пуст</Placeholder>}</List>
       </ItemGroup>
       <Div>
         <Button
