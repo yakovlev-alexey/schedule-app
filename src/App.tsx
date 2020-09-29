@@ -4,7 +4,6 @@ import { Epic, Tabbar, TabbarItem, View, Panel } from '@vkontakte/vkui'
 import Icon28CalendarOutline from '@vkontakte/icons/dist/28/calendar_outline'
 import Icon28SettingsOutline from '@vkontakte/icons/dist/28/settings_outline'
 import Icon28UsersOutline from '@vkontakte/icons/dist/28/users_outline'
-import axios from 'axios'
 
 import Schedule from './Schedule'
 import { Week, Day, Group, Faculty } from './types'
@@ -40,9 +39,13 @@ const extractDays = ({ week, days }: Week): Day[] => {
 
 const getDefaultDate = (): Date => {
   const today = new Date()
-  return today.getDay() == 0 || today.getHours() > 20
-    ? addDays(today, 1)
-    : today
+  if (today.getDay() == 6 && today.getHours() > 20) {
+    return addDays(today, 2)
+  } else if (today.getDay() == 0 || today.getHours() > 20) {
+    return addDays(today, 1)
+  } else {
+    return today
+  }
 }
 
 const App: React.FunctionComponent = () => {
