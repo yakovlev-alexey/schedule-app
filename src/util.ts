@@ -8,3 +8,8 @@ export const formatDate = (date: Date): string => {
 
   return [year, month, day].join('-')
 }
+
+export const addDays = (date: Date, days: number): Date => {
+  date.setDate(date.getDate() + days)
+  return date
+}
