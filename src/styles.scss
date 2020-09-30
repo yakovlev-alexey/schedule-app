@@ -11,6 +11,12 @@ $current-date-color: #edaf51;
   margin-top: -1px;
   top: 55px;
   z-index: 100000;
+
+  background-color: white;
+
+  .Separator:first-child {
+    padding-top: 5px;
+  }
 }
 
 .View--ios {
@@ -28,11 +34,10 @@ $current-date-color: #edaf51;
 }
 
 body[scheme="space_gray"], body[scheme=client_dark] {
-  .schedule-calendar {
+  .schedule-calendar-wrapper {
     background-color: #19191a;
-    color: white;
   }
-  .react-calendar__tile, .react-calendar__navigation__arrow, .react-calendar__navigation__label {
+  .schedule-calendar, .react-calendar__tile, .react-calendar__navigation__arrow, .react-calendar__navigation__label {
     color: white;
   }
   .react-calendar__month-view__days__day--weekend {
