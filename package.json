@@ -9,6 +9,11 @@
     "watch": "webpack-dev-server",
     "build": "webpack"
   },
+  "git": {
+    "scripts": {
+      "pre-push": "yarn build && surge --project ./dist --domain polytech-schedule.surge.sh"
+    }
+  },
   "dependencies": {
     "@babel/cli": "^7.11.6",
     "@babel/core": "^7.11.6",
@@ -39,6 +44,7 @@
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-react": "^7.20.6",
     "file-loader": "^6.1.0",
+    "git-scripts": "^0.4.3",
     "html-loader": "^1.3.0",
     "html-webpack-plugin": "^4.4.1",
     "http-server": "^0.12.3",
