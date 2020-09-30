@@ -60,6 +60,7 @@ const App: React.FunctionComponent = () => {
   const [selectedGroupId, setSelectedGroupId] = useState<number>(
     JSON.parse(localStorage.getItem('selectedGroupId'))
   )
+
   const [smartDefaultDay, setSmartDefaultDay] = useState<boolean>(resolveSmartDefaultDay())
   const [selectedDate, setSelectedDate] = useState<Date>(getDefaultDate(smartDefaultDay))
 
@@ -85,6 +86,8 @@ const App: React.FunctionComponent = () => {
     }
   }
 
+  useEffect(fetchDays, [selectedDate])
+
   const fetchAllGroups = () => {
     API.get('/faculties')
       .then((response) => response.data.faculties)
@@ -99,17 +102,17 @@ const App: React.FunctionComponent = () => {
       .catch(() => setAllGroups([]))
   }
 
-  useEffect(fetchDays, [selectedDate])
-
   const onStoryChange = (e: React.MouseEvent<HTMLElement, MouseEvent>) =>
     setActiveView(e.currentTarget.dataset.story)
 
   const selectGroup = (group: number, redirect = true) => {
     localStorage.setItem('selectedGroupId', JSON.stringify(group))
+    setSelectedGroupId(group)
+
     if (redirect) {
       setActiveView('schedule')
     }
-    setSelectedGroupId(group)
+
     setError(false)
     setLoading(true)
     API.get(`/${group}?date=${formatDate(selectedDate)}`)
@@ -123,20 +126,24 @@ const App: React.FunctionComponent = () => {
 
   const saveGroup = (group: Group) => {
     const newSavedGroups = savedGroups == null ? [group] : [...savedGroups, group]
-    localStorage.setItem('savedGroups', JSON.stringify(newSavedGroups))
+
     if (savedGroups == null || savedGroups.length == 0) {
       selectGroup(group.id)
     }
+
+    localStorage.setItem('savedGroups', JSON.stringify(newSavedGroups))
     setSavedGroups(newSavedGroups)
     setActiveGroupsPanel('saved')
   }
 
   const removeGroup = (id: number) => {
     const newSavedGroups = savedGroups?.filter((group) => group.id != id)
-    localStorage.setItem('savedGroups', JSON.stringify(newSavedGroups))
+
     if (selectedGroupId == id) {
       selectGroup(newSavedGroups.length > 0 ? newSavedGroups[0].id : null, false)
     }
+
+    localStorage.setItem('savedGroups', JSON.stringify(newSavedGroups))
     setSavedGroups(newSavedGroups)
   }
 
@@ -147,7 +154,7 @@ const App: React.FunctionComponent = () => {
 
   const reset = () => {
     localStorage.clear()
-    setActiveView('groups')
+    setActiveView('schedule')
     setActiveGroupsPanel('saved')
     setDays([])
     setSelectedDate(getDefaultDate())

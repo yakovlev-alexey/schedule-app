@@ -59,9 +59,8 @@ const AddGroups: React.FunctionComponent<AddGroupsProps> = (props: AddGroupsProp
   )
 
   const renderResults = (): JSX.Element | JSX.Element[] => {
-    const results = groups.filter(
-      ({ name, spec }) => name.includes(search) || spec.includes(search)
-    )
+    const results =
+      groups?.filter(({ name, spec }) => name.includes(search) || spec.includes(search)) ?? []
     if (results.length == 0) {
       return <Placeholder>Ничего не найдено</Placeholder>
     } else if (results.length > 10) {
