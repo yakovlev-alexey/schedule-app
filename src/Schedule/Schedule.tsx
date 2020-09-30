@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react'
 
-import { PanelHeader, Separator } from '@vkontakte/vkui'
+import { Panel, PanelHeader, Separator } from '@vkontakte/vkui'
 import Calendar from 'react-calendar/dist/umd/Calendar'
 
 import ScheduleView from './ScheduleView'
@@ -24,7 +24,7 @@ const Schedule: React.FunctionComponent<ScheduleProps> = (props: ScheduleProps) 
   const formattedDate = useMemo(() => formatDate(props.selectedDate), [props.selectedDate])
 
   return (
-    <React.Fragment>
+    <Panel>
       <PanelHeader separator={false}>Расписание</PanelHeader>
       <div className="schedule-calendar-wrapper">
         <Separator />
@@ -46,7 +46,7 @@ const Schedule: React.FunctionComponent<ScheduleProps> = (props: ScheduleProps) 
           onSelectGroup={props.onSelectGroup}
         />
       </div>
-    </React.Fragment>
+    </Panel>
   )
 }
 

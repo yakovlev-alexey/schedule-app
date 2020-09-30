@@ -1,6 +1,15 @@
 import React, { useState } from 'react'
 
-import { CellButton, Group, Header, Link, PanelHeader, SimpleCell, Switch } from '@vkontakte/vkui'
+import {
+  CellButton,
+  Group,
+  Header,
+  Link,
+  Panel,
+  PanelHeader,
+  SimpleCell,
+  Switch
+} from '@vkontakte/vkui'
 
 type SettingsProps = {
   smartDefaultDay: boolean
@@ -12,7 +21,7 @@ const Settings: React.FunctionComponent<SettingsProps> = (props: SettingsProps) 
   const [showTooltip, setShowTooltip] = useState<boolean>(false)
 
   return (
-    <React.Fragment>
+    <Panel>
       <PanelHeader>Настройки</PanelHeader>
       <Group header={<Header mode="secondary">Поведение</Header>}>
         <SimpleCell
@@ -42,7 +51,7 @@ const Settings: React.FunctionComponent<SettingsProps> = (props: SettingsProps) 
           Восстановить настройки
         </CellButton>
       </Group>
-    </React.Fragment>
+    </Panel>
   )
 }
 

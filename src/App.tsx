@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import bridge from '@vkontakte/vk-bridge'
 
 import { Epic, Tabbar, TabbarItem, View, Panel, Alert } from '@vkontakte/vkui'
 import Icon28CalendarOutline from '@vkontakte/icons/dist/28/calendar_outline'
@@ -86,7 +87,16 @@ const App: React.FunctionComponent = () => {
     }
   }
 
-  useEffect(fetchDays, [selectedDate])
+  useEffect(() => {
+    bridge.subscribe(({ detail: { type, data } }) => {
+      if (type == 'VKWebAppUpdateConfig') {
+        const schemeAttribute = document.createAttribute('scheme')
+        schemeAttribute.value = data.scheme ? data.scheme : 'client_light'
+        document.body.attributes.setNamedItem(schemeAttribute)
+      }
+    })
+    fetchDays()
+  }, [selectedDate])
 
   const fetchAllGroups = () => {
     API.get('/faculties')

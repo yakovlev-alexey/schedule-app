@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const API = axios.create({
-  baseURL: 'https://polytech-schedule.herokuapp.com',
+  baseURL: 'https://ruz.spbstu.ru/api/v1/ruz',
   responseType: 'json'
 })
 

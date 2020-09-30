@@ -27,6 +27,22 @@ $current-date-color: #edaf51;
   flex-flow: column-reverse nowrap;
 }
 
+body[scheme="space_gray"], body[scheme=client_dark] {
+  .schedule-calendar {
+    background-color: #19191a;
+    color: white;
+  }
+  .react-calendar__tile, .react-calendar__navigation__arrow, .react-calendar__navigation__label {
+    color: white;
+  }
+  .react-calendar__month-view__days__day--weekend {
+    color: #b62d2d;
+  }
+  .react-calendar__month-view__days__day--neighboringMonth {
+    color: #757575;
+  }
+}
+
 .react-calendar__navigation {
   margin: 0;
 }
@@ -81,8 +97,7 @@ $tile-size: 15px;
 
 .react-calendar__navigation button:enabled:hover,
 .react-calendar__navigation button:enabled:focus {
-  background-color: #fff;
-  @include react-calendar__tile--selected(#d3d3d3);
+  background-color: rgba(0, 0, 0, 0);
 }
 
 .react-calendar__navigation__prev2-button,
