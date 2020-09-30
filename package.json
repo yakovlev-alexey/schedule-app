@@ -7,11 +7,12 @@
   "scripts": {
     "start": "http-server ./dist --proxy https://ruz.spbstu.ru/api/v1/ruz",
     "watch": "webpack-dev-server",
-    "build": "webpack"
+    "build": "webpack",
+    "deploy": "yarn build && yarn surge --project ./dist --domain polytech-schedule.surge.sh"
   },
   "git": {
     "scripts": {
-      "pre-push": "yarn build && surge --project ./dist --domain polytech-schedule.surge.sh"
+      "pre-push": "yarn deploy"
     }
   },
   "dependencies": {

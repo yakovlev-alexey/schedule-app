@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import bridge from '@vkontakte/vk-bridge'
 
-import { Epic, Tabbar, TabbarItem, View, Panel, Alert } from '@vkontakte/vkui'
+import { Epic, Tabbar, TabbarItem, View, Panel, Alert, ScreenSpinner } from '@vkontakte/vkui'
 import Icon28CalendarOutline from '@vkontakte/icons/dist/28/calendar_outline'
 import Icon28SettingsOutline from '@vkontakte/icons/dist/28/settings_outline'
 import Icon28UsersOutline from '@vkontakte/icons/dist/28/users_outline'
@@ -21,7 +21,7 @@ import './styles.scss'
 const extractDays = ({ week, days }: Week): Day[] => {
   const extracted = []
   for (let i = 1; i <= 7; ++i) {
-    const day = days.find(({ weekday }) => weekday == i)
+    const day = days?.find(({ weekday }) => weekday == i)
     extracted.push(
       day != null
         ? day
@@ -48,34 +48,37 @@ const getDefaultDate = (smartDefaultDay = true): Date => {
   }
 }
 
-const resolveSmartDefaultDay = () => {
-  const sdd = JSON.parse(localStorage.getItem('smartDefaultDay'))
-  return sdd == null ? true : sdd
+const resolveSmartDefaultDay = (sdd: boolean) => (sdd == null ? true : sdd)
+
+const resetWebAppStorage = () => {
+  bridge.send('VKWebAppStorageSet', { key: 'theme', value: '' })
+  bridge.send('VKWebAppStorageSet', { key: 'smartDefaultDay', value: '' })
+  bridge.send('VKWebAppStorageSet', { key: 'savedGroups', value: '' })
+  bridge.send('VKWebAppStorageSet', { key: 'selectedGroupId', value: '' })
 }
 
 const App: React.FunctionComponent = () => {
   const [activeView, setActiveView] = useState<'schedule' | 'groups' | 'settings'>('schedule')
-  const [popout, setPopout] = useState<JSX.Element>(null)
+  const [popout, setPopout] = useState<JSX.Element>(<ScreenSpinner />)
   const [activeGroupsPanel, setActiveGroupsPanel] = useState<'saved' | 'add'>('saved')
 
-  const [selectedGroupId, setSelectedGroupId] = useState<number>(
-    JSON.parse(localStorage.getItem('selectedGroupId'))
-  )
+  const [selectedGroupId, setSelectedGroupId] = useState<number>(null)
 
-  const [smartDefaultDay, setSmartDefaultDay] = useState<boolean>(resolveSmartDefaultDay())
-  const [selectedDate, setSelectedDate] = useState<Date>(getDefaultDate(smartDefaultDay))
+  const [smartDefaultDay, setSmartDefaultDay] = useState<boolean>(true)
+  const [selectedDate, setSelectedDate] = useState<Date>(getDefaultDate())
 
   const [days, setDays] = useState<Day[]>([])
 
   const [error, setError] = useState<boolean>(false)
-  const [loading, setLoading] = useState<boolean>(false)
+  const [loading, setLoading] = useState<boolean>(true)
 
-  const [savedGroups, setSavedGroups] = useState<Group[]>(
-    JSON.parse(localStorage.getItem('savedGroups'))
-  )
+  const [savedGroups, setSavedGroups] = useState<Group[]>(null)
   const [allGroups, setAllGroups] = useState<Group[]>(null)
 
   const fetchDays = () => {
+    if (selectedGroupId == null || selectedDate == null) {
+      return
+    }
     setError(false)
     const formattedDate = formatDate(selectedDate)
     if (days.find(({ date }) => date == formattedDate) == null) {
@@ -95,8 +98,23 @@ const App: React.FunctionComponent = () => {
         document.body.attributes.setNamedItem(schemeAttribute)
       }
     })
-    fetchDays()
-  }, [selectedDate])
+    bridge
+      .send('VKWebAppStorageGet', {
+        keys: ['theme', 'smartDefaultDay', 'selectedGroupId', 'savedGroups']
+      })
+      .then(({ keys: [th, sdd, sgi, sg] }) => {
+        const parsedSdd = resolveSmartDefaultDay(
+          Boolean(JSON.parse(sdd.value.length > 0 ? sdd.value : 'null'))
+        )
+        setSmartDefaultDay(parsedSdd)
+        setSelectedGroupId(JSON.parse(sgi.value.length > 0 ? sgi.value : 'null'))
+        setSelectedDate(getDefaultDate(parsedSdd))
+        setSavedGroups(JSON.parse(sg.value.length > 0 ? sg.value : 'null'))
+        setPopout(null)
+      })
+  }, [])
+
+  useEffect(fetchDays, [selectedDate])
 
   const fetchAllGroups = () => {
     API.get('/faculties')
@@ -116,7 +134,10 @@ const App: React.FunctionComponent = () => {
     setActiveView(e.currentTarget.dataset.story)
 
   const selectGroup = (group: number, redirect = true) => {
-    localStorage.setItem('selectedGroupId', JSON.stringify(group))
+    bridge.send('VKWebAppStorageSet', {
+      key: 'selectedGroupId',
+      value: JSON.stringify(group)
+    })
     setSelectedGroupId(group)
 
     if (redirect) {
@@ -141,7 +162,10 @@ const App: React.FunctionComponent = () => {
       selectGroup(group.id)
     }
 
-    localStorage.setItem('savedGroups', JSON.stringify(newSavedGroups))
+    bridge.send('VKWebAppStorageSet', {
+      key: 'savedGroups',
+      value: JSON.stringify(newSavedGroups)
+    })
     setSavedGroups(newSavedGroups)
     setActiveGroupsPanel('saved')
   }
@@ -153,17 +177,23 @@ const App: React.FunctionComponent = () => {
       selectGroup(newSavedGroups.length > 0 ? newSavedGroups[0].id : null, false)
     }
 
-    localStorage.setItem('savedGroups', JSON.stringify(newSavedGroups))
+    bridge.send('VKWebAppStorageSet', {
+      key: 'savedGroups',
+      value: JSON.stringify(newSavedGroups)
+    })
     setSavedGroups(newSavedGroups)
   }
 
   const changeSmartDefaultDay = (value: boolean) => {
+    bridge.send('VKWebAppStorageSet', {
+      key: 'smartDefaultDay',
+      value: JSON.stringify(value)
+    })
     setSmartDefaultDay(value)
-    localStorage.setItem('smartDefaultDay', JSON.stringify(value))
   }
 
   const reset = () => {
-    localStorage.clear()
+    resetWebAppStorage()
     setActiveView('schedule')
     setActiveGroupsPanel('saved')
     setDays([])
